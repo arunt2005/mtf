@@ -1,21 +1,72 @@
+// ==========================================
+// CONFIGURATION: Edit your quiz data here!
+// ==========================================
+const GAME_CONFIG = {
+    title: "Match the Concepts",
+    instruction: "Tap an item on the left, then tap its match on the right to pair them up.",
+    data: [
+        { left: "HTML", right: "Defines Structure" },
+        { left: "CSS", right: "Handles Styling" },
+        { left: "JavaScript", right: "Adds Interactivity" },
+        { left: "SQL", right: "Manages Databases" },
+        { left: "Python", right: "Data Science & AI" } // Easily add more items!
+    ]
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     const leftColumn = document.getElementById('left-column');
     const rightColumn = document.getElementById('right-column');
     const submitBtn = document.getElementById('submit-btn');
     const resetBtn = document.getElementById('reset-btn');
     const resultMessage = document.getElementById('result-message');
+    
+    // Set customized headers
+    document.getElementById('game-title').innerText = GAME_CONFIG.title;
+    document.getElementById('game-instruction').innerText = GAME_CONFIG.instruction;
 
     let selectedLeft = null;
     let selectedRight = null;
-    
-    // Maps item elements to their assigned pair IDs
-    // Example: { 'left-1': 1, 'right-3': 1 } means they belong to pair #1
-    let assignments = new Map(); 
     let pairCounter = 1;
+    const totalItems = GAME_CONFIG.data.length;
 
-    const totalItems = leftColumn.children.length;
+    // Initialize the game UI
+    initGame();
 
-    // Left Column Taps
+    function initGame() {
+        leftColumn.innerHTML = '';
+        rightColumn.innerHTML = '';
+        
+        const leftItems = [];
+        const rightItems = [];
+
+        // Build items out from configuration array
+        GAME_CONFIG.data.forEach((item, index) => {
+            const id = index + 1; // Creates a distinct pairing ID tracker
+
+            // Create Left element
+            const leftEl = document.createElement('div');
+            leftEl.className = 'item';
+            leftEl.setAttribute('data-id', id);
+            leftEl.innerText = item.left;
+            leftItems.push(leftEl);
+
+            // Create Right element
+            const rightEl = document.createElement('div');
+            rightEl.className = 'item';
+            rightEl.setAttribute('data-match', id);
+            rightEl.innerText = item.right;
+            rightItems.push(rightEl);
+        });
+
+        // Shuffle the right-side elements so they don't line up perfectly
+        rightItems.sort(() => Math.random() - 0.5);
+
+        // Inject elements into their respective DOM nodes
+        leftItems.forEach(el => leftColumn.appendChild(el));
+        rightItems.forEach(el => rightColumn.appendChild(el));
+    }
+
+    // Left Column Event Handler
     leftColumn.addEventListener('click', (e) => {
         const target = e.target.closest('.item');
         if (!target || target.classList.contains('submitted')) return;
@@ -33,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         handlePairing();
     });
 
-    // Right Column Taps
+    // Right Column Event Handler
     rightColumn.addEventListener('click', (e) => {
         const target = e.target.closest('.item');
         if (!target || target.classList.contains('submitted')) return;
@@ -54,11 +105,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function handlePairing() {
         if (!selectedLeft || !selectedRight) return;
 
-        // Clear any old pairings these individual elements already had
+        // Clear any prior mappings these elements had
         clearPreviousPairing(selectedLeft, 'left');
         clearPreviousPairing(selectedRight, 'right');
 
-        // Assign them a common visual pair number
         const currentPairNum = pairCounter++;
         
         selectedLeft.setAttribute('data-pair-id', currentPairNum);
@@ -80,7 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const oldPairId = element.getAttribute('data-pair-id');
         if (!oldPairId) return;
 
-        // Find the match on the opposite side that shared this ID and break it
         const selector = side === 'left' ? '#right-column .item' : '#left-column .item';
         document.querySelectorAll(selector).forEach(el => {
             if (el.getAttribute('data-pair-id') === oldPairId) {
@@ -125,7 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const leftId = leftItem.getAttribute('data-id');
             const pairId = leftItem.getAttribute('data-pair-id');
 
-            // Find the right item holding the same pair ID
             const rightItem = rightColumn.querySelector(`[data-pair-id="${pairId}"]`);
             rightItem.classList.add('submitted');
             
@@ -141,29 +189,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Show Score Results
         resultMessage.innerText = `You scored ${score} out of ${totalItems}!`;
         resultMessage.classList.remove('hidden');
         resetBtn.classList.remove('hidden');
     });
 
-    // Reset everything
+    // Reset layout
     resetBtn.addEventListener('click', () => {
         pairCounter = 1;
         resultMessage.classList.add('hidden');
         resetBtn.classList.add('hidden');
         submitBtn.classList.add('hidden');
-
-        document.querySelectorAll('.item').forEach(item => {
-            item.className = 'item';
-            item.removeAttribute('data-pair-id');
-            const badge = item.querySelector('.pair-badge');
-            if (badge) badge.remove();
-        });
-
-        // Shuffle right side elements for freshness
-        const items = Array.from(rightColumn.children);
-        items.sort(() => Math.random() - 0.5);
-        items.forEach(item => rightColumn.appendChild(item));
+        
+        // Re-initialize lists and shuffle the configurations cleanly again
+        initGame();
     });
 });

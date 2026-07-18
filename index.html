@@ -3,29 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Match the Concepts</title>
+    <title>Match the Following</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="game-container">
-        <h1>Match the Concepts</h1>
-        <p class="instruction">Tap an item on the left, then tap its match on the right to pair them up.</p>
+        <h1 id="game-title">Match the Following</h1>
+        <p id="game-instruction" class="instruction">Tap an item on the left, then tap its match on the right to pair them up.</p>
 
         <div class="match-box">
-            <div class="column" id="left-column">
-                <div class="item" data-id="1">HTML</div>
-                <div class="item" data-id="2">CSS</div>
-                <div class="item" data-id="3">JavaScript</div>
-                <div class="item" data-id="4">SQL</div>
-            </div>
-
-            <div class="column" id="right-column">
-                <div class="item" data-match="3">Adds Interactivity</div>
-                <div class="item" data-match="1">Defines Structure</div>
-                <div class="item" data-match="4">Manages Databases</div>
-                <div class="item" data-match="2">Handles Styling</div>
-            </div>
+            <div class="column" id="left-column"></div>
+            <div class="column" id="right-column"></div>
         </div>
 
         <div class="action-area">
