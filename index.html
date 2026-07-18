@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match the Concepts</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="game-container">
+        <h1>Match the Concepts</h1>
+        <p class="instruction">Tap an item on the left, then tap its match on the right to pair them up.</p>
+
+        <div class="match-box">
+            <div class="column" id="left-column">
+                <div class="item" data-id="1">HTML</div>
+                <div class="item" data-id="2">CSS</div>
+                <div class="item" data-id="3">JavaScript</div>
+                <div class="item" data-id="4">SQL</div>
+            </div>
+
+            <div class="column" id="right-column">
+                <div class="item" data-match="3">Adds Interactivity</div>
+                <div class="item" data-match="1">Defines Structure</div>
+                <div class="item" data-match="4">Manages Databases</div>
+                <div class="item" data-match="2">Handles Styling</div>
+            </div>
+        </div>
+
+        <div class="action-area">
+            <button id="submit-btn" class="btn hidden">Submit Answers</button>
+            <div id="result-message" class="result-text hidden"></div>
+            <button id="reset-btn" class="btn btn-secondary hidden">Try Again</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
