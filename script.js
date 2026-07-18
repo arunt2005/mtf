@@ -2,7 +2,7 @@
 // CONFIGURATION: Edit your quiz data here!
 // ==========================================
 const GAME_CONFIG = {
-    title: "Match the Concepts",
+    title: "Match the Following",
     instruction: "Tap an item on the left, then tap its match on the right to pair them up.",
     data: [
         { left: "HTML", right: "Defines Structure" },
